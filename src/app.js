@@ -29,7 +29,6 @@ const adminScanRoutes = require("./routes/adminScanRoutes");
 const publicStaffRoutes = require("./routes/publicStaffRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const walkinRoutes = require("./routes/walkinRoutes");
-const cronRoutes = require("./routes/cronRoutes"); // <-- Tambahan rute cron
 const { createNotification } = require("./controllers/notificationController");
 
 const app = express();
@@ -109,7 +108,6 @@ app.use("/api/admin/scan", adminScanRoutes);
 app.use("/api/public/staff", publicStaffRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/admin/walkin", walkinRoutes);
-app.use("/api/cron", cronRoutes); // <-- Mendaftarkan rute cron
 
 app.get("/api/health", (req, res) => {
   res.json({
