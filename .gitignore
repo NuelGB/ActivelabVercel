@@ -1,0 +1,6 @@
+node_modules/
+.env
+uploads/branches/*
+uploads/admins/*
+!uploads/branches/.gitkeep
+!uploads/admins/.gitkeep
