@@ -12,13 +12,31 @@ const getPublicSchedules = async (req, res) => {
 
   try {
     const today = new Date();
-    const todayStr = today.toISOString().split("T")[0];
+
+    // 1. Format tanggal ke YYYY-MM-DD menggunakan timezone Asia/Jakarta (WIB)
+    // 'en-CA' digunakan karena secara default menghasilkan format YYYY-MM-DD
+    const dateFormatter = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const todayStr = dateFormatter.format(today);
+
+    // 2. Hitung rentang 6 hari ke depan berdasarkan waktu objek saat ini
     const endDate = new Date(today);
     endDate.setDate(endDate.getDate() + 6);
-    const endDateStr = endDate.toISOString().split("T")[0];
+    const endDateStr = dateFormatter.format(endDate);
 
+    // 3. Hitung cutoff (+1 menit) dan paksa format ke HH:MM dalam timezone Asia/Jakarta (WIB)
+    // 'en-GB' digunakan untuk memastikan format jam 24 jam (HH:MM)
     const cutoff = new Date(today.getTime() + 1 * 60 * 1000);
-    const cutoffTimeStr = cutoff.toTimeString().slice(0, 5);
+    const cutoffTimeStr = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(cutoff);
 
     const result = await pool.query(
       `SELECT
